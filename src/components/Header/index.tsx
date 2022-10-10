@@ -31,6 +31,7 @@ export function Header() {
           onClick={() => {
             dateContext?.setToShowDate(`${dayjs().format("DD/MM")}`);
             dateContext?.setToGetDate(`${dayjs().format("MM-DD")}`);
+            dateContext?.setYear(`${dayjs().format("YYYY")}`);
           }}
           to={`/consultas/${date.format("DD-MM")}`}
         >

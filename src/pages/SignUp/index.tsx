@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
 import { api } from "../../services/api";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import {
   Container,
@@ -19,15 +21,30 @@ export function SignUp() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [pwdError, setPwdError] = useState("");
+  const [emailError, setEmailError] = useState("");
+
+  const error = (message: string) =>
+    toast.error(`${message}`, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
 
   function submitForm(e: React.FormEvent) {
     e.preventDefault();
     setIsLoading(true);
 
     if (password !== confirmPassword) {
+      setPwdError("true");
       setIsLoading(false);
-      return setIsError("Confirme a senha e a senha precisam ser iguais!");
+      setIsError(true);
+      return error("Confirme a senha e a senha precisam ser iguais!");
     }
 
     const signupInformation = {
@@ -39,15 +56,21 @@ export function SignUp() {
     api
       .post("/signup", signupInformation)
       .then(() => {
+        toast.success("Cadastro realizado com sucesso");
         setIsLoading(false);
         navigate("/");
       })
       .catch((err) => {
         if (err.response.status === 422) {
-          setIsError("Senhas precisam ter 6 caracteres de tamanho!");
+          setIsError(true);
+          error("Senhas precisam ter 6 caracteres de tamanho!");
+          setPwdError("true");
         }
         if (err.response.status === 409) {
-          setIsError("Email já cadastrado, por favor altere o seu email");
+          setIsError(true);
+          error("Email já cadastrado");
+          setEmailError("true");
+          setPwdError("true");
         }
         setIsLoading(false);
       });
@@ -62,6 +85,7 @@ export function SignUp() {
           <Input
             type="email"
             name="email"
+            color={emailError}
             required
             placeholder="Email"
             value={email}
@@ -70,6 +94,7 @@ export function SignUp() {
           <Input
             type="password"
             name="password"
+            color={pwdError}
             required
             placeholder="Senha"
             value={password}
@@ -78,13 +103,29 @@ export function SignUp() {
           <Input
             type="password"
             name="confirmPassword"
+            color={pwdError}
             required
             placeholder="Confirme a senha"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
-          {isError !== "" ? <SignupError>{isError}</SignupError> : ""}
+          {isError ? (
+            <ToastContainer
+              position="top-left"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              limit={4}
+            />
+          ) : (
+            ""
+          )}
 
           {isLoading ? (
             <Button type="submit" disabled={isLoading}>

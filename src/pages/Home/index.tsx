@@ -27,7 +27,7 @@ export function Home() {
 
     api
       .get(
-        `/consultations/${dayjs().format("YYYY")}-${dayjs().format("mm-dd")}`,
+        `/consultations/${dayjs().format("YYYY")}-${dayjs().format("MM-DD")}`,
         config
       )
       .then((res) => {

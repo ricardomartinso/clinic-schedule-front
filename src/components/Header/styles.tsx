@@ -50,7 +50,7 @@ export const MenuMobile = styled.nav`
 export const LinkStyled = styled(Link)`
   margin-right: 30px;
   font-size: 18px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1.5px solid #ccc;
   color: white;
   font-weight: 500;
 

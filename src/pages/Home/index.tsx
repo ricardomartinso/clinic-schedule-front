@@ -9,7 +9,7 @@ import { Calendar } from "../../components/Calendar";
 export function Home() {
   const [morningPatients, setMorningPatients] = useState([]);
   const [afternoonPatients, setAfternoonPatients] = useState([]);
-
+  const [isMobile, setIsMobile] = useState(true);
   const now = new Date().toLocaleDateString("pt-br", {
     weekday: "long",
     month: "long",
@@ -40,8 +40,17 @@ export function Home() {
       });
   }
 
+  const handleResize = () => {
+    if (window.innerWidth < 720) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+
   useEffect(() => {
     getPatientsConsultations();
+    window.addEventListener("resize", handleResize);
   }, []);
 
   return (
@@ -49,91 +58,183 @@ export function Home() {
       <Header />
       <Container>
         <Content>
-          <LeftSide>
-            <Month>{now.toUpperCase()} DE 2022</Month>
+          {isMobile ? (
+            <>
+              <RightSide>
+                <Calendar />
+              </RightSide>
 
-            {morningPatients.length >= 1 ? (
-              <>
-                <h1>Consultas pela parte da manhã</h1>
-                <table className="morning-patients">
-                  <thead>
-                    <tr>
-                      <th>Pacientes</th>
-                      <th>Plano Odontológico</th>
-                      <th>Contato</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {morningPatients.map((patient: any) => {
-                      return (
-                        <tr key={patient.id}>
-                          <td data-label="Nome do Paciente">
-                            {patient.patientName}
-                          </td>
-                          <td data-label="Plano Odontológico">
-                            {patient.health_insurance
-                              ? patient.health_insurance
-                              : "Não informado!"}
-                          </td>
-                          <td data-label="Contato">
-                            {patient.patient.phone[0].number}
-                          </td>
+              <LeftSide>
+                <Month>{now.toUpperCase()} DE 2022</Month>
+
+                {morningPatients.length >= 1 ? (
+                  <>
+                    <h1>Consultas pela parte da manhã</h1>
+                    <table className="morning-patients">
+                      <thead>
+                        <tr>
+                          <th>Pacientes</th>
+                          <th>Plano Odontológico</th>
+                          <th>Contato</th>
                         </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </>
-            ) : (
-              <>
-                <h1>Consultas pela parte da manhã</h1>
-                <span>Ainda não há pacientes marcados.</span>
-              </>
-            )}
+                      </thead>
+                      <tbody>
+                        {morningPatients.map((patient: any) => {
+                          return (
+                            <tr key={patient.id}>
+                              <td data-label="Nome do Paciente">
+                                {patient.patientName}
+                              </td>
+                              <td data-label="Plano Odontológico">
+                                {patient.health_insurance
+                                  ? patient.health_insurance
+                                  : "Não informado!"}
+                              </td>
+                              <td data-label="Contato">
+                                {patient.patient.phone[0].number}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </>
+                ) : (
+                  <>
+                    <h1>Consultas pela parte da manhã</h1>
+                    <span>Ainda não há pacientes marcados.</span>
+                  </>
+                )}
 
-            {afternoonPatients.length >= 1 ? (
-              <>
-                <h1>Consultas pela parte da tarde</h1>
-                <table className="afternoon-patients">
-                  <thead>
-                    <tr>
-                      <th>Pacientes</th>
-                      <th>Plano Odontológico</th>
-                      <th>Contato</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {afternoonPatients.map((patient: any) => {
-                      return (
-                        <tr key={patient.id}>
-                          <td data-label="Nome do Paciente">
-                            {patient.patientName}
-                          </td>
-                          <td data-label="Plano Odontológico">
-                            {patient.health_insurance
-                              ? patient.health_insurance
-                              : "Não informado!"}
-                          </td>
-                          <td data-label="Contato">
-                            {patient.patient.phone[0].number}
-                          </td>
+                {afternoonPatients.length >= 1 ? (
+                  <>
+                    <h1>Consultas pela parte da tarde</h1>
+                    <table className="afternoon-patients">
+                      <thead>
+                        <tr>
+                          <th>Pacientes</th>
+                          <th>Plano Odontológico</th>
+                          <th>Contato</th>
                         </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </>
-            ) : (
-              <>
-                <h1>Consultas pela parte da tarde</h1>
-                <span>Ainda não há pacientes marcados.</span>
-              </>
-            )}
-          </LeftSide>
+                      </thead>
+                      <tbody>
+                        {afternoonPatients.map((patient: any) => {
+                          return (
+                            <tr key={patient.id}>
+                              <td data-label="Nome do Paciente">
+                                {patient.patientName}
+                              </td>
+                              <td data-label="Plano Odontológico">
+                                {patient.health_insurance
+                                  ? patient.health_insurance
+                                  : "Não informado!"}
+                              </td>
+                              <td data-label="Contato">
+                                {patient.patient.phone[0].number}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </>
+                ) : (
+                  <>
+                    <h1>Consultas pela parte da tarde</h1>
+                    <span>Ainda não há pacientes marcados.</span>
+                  </>
+                )}
+              </LeftSide>
+            </>
+          ) : (
+            <>
+              <LeftSide>
+                <Month>{now.toUpperCase()} DE 2022</Month>
 
-          <RightSide>
-            <Calendar />
-          </RightSide>
+                {morningPatients.length >= 1 ? (
+                  <>
+                    <h1>Consultas pela parte da manhã</h1>
+                    <table className="morning-patients">
+                      <thead>
+                        <tr>
+                          <th>Pacientes</th>
+                          <th>Plano Odontológico</th>
+                          <th>Contato</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {morningPatients.map((patient: any) => {
+                          return (
+                            <tr key={patient.id}>
+                              <td data-label="Nome do Paciente">
+                                {patient.patientName}
+                              </td>
+                              <td data-label="Plano Odontológico">
+                                {patient.health_insurance
+                                  ? patient.health_insurance
+                                  : "Não informado!"}
+                              </td>
+                              <td data-label="Contato">
+                                {patient.patient.phone[0].number}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </>
+                ) : (
+                  <>
+                    <h1>Consultas pela parte da manhã</h1>
+                    <span>Ainda não há pacientes marcados.</span>
+                  </>
+                )}
+
+                {afternoonPatients.length >= 1 ? (
+                  <>
+                    <h1>Consultas pela parte da tarde</h1>
+                    <table className="afternoon-patients">
+                      <thead>
+                        <tr>
+                          <th>Pacientes</th>
+                          <th>Plano Odontológico</th>
+                          <th>Contato</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {afternoonPatients.map((patient: any) => {
+                          return (
+                            <tr key={patient.id}>
+                              <td data-label="Nome do Paciente">
+                                {patient.patientName}
+                              </td>
+                              <td data-label="Plano Odontológico">
+                                {patient.health_insurance
+                                  ? patient.health_insurance
+                                  : "Não informado!"}
+                              </td>
+                              <td data-label="Contato">
+                                {patient.patient.phone[0].number}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </>
+                ) : (
+                  <>
+                    <h1>Consultas pela parte da tarde</h1>
+                    <span>Ainda não há pacientes marcados.</span>
+                  </>
+                )}
+              </LeftSide>
+
+              <RightSide>
+                <Calendar />
+              </RightSide>
+            </>
+          )}
         </Content>
       </Container>
     </>

@@ -170,6 +170,16 @@ export const LeftSide = styled.div`
       border-bottom-left-radius: 0;
     }
   }
+
+  @media (min-width: 1000px) {
+    align-items: flex-start;
+  }
+
+  @media (min-width: 1300px) {
+    table {
+      width: 68%;
+    }
+  }
 `;
 
 export const RightSide = styled.div`
@@ -185,6 +195,11 @@ export const RightSide = styled.div`
   @media (max-width: 900px) {
     width: 100%;
     margin-bottom: 70px;
+  }
+
+  @media (max-width: 720px) {
+    margin-top: 30px;
+    margin-bottom: 0;
   }
 `;
 

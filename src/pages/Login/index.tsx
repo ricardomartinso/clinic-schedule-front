@@ -62,7 +62,7 @@ export function Login() {
         if (response.status === 200) {
           console.log(response.data);
           const { token } = response.data;
-
+          toast.success("Login realizado com sucesso");
           localStorage.setItem("token", token);
           loginUser("User");
           navigate("/home");

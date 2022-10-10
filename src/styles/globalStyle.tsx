@@ -8,8 +8,8 @@ export const GlobalStyle = createGlobalStyle`
   }
   body {
     margin: 0;
-    font-family: 'Raleway', sans-serif;
-    background-color: #688BAB;
+    font-family: 'Merriweather', serif;
+    background-color: #fff;
   }
   li {
     list-style: none;
@@ -19,13 +19,13 @@ export const GlobalStyle = createGlobalStyle`
     display: inline-block;
   }
   h1 {
-    font-family: 'Saira Stencil One', cursive;
+    font-family: 'Montserrat', sans-serif;
   }
   h2,h3,h4,h5,h6 {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Montserrat', sans-serif;
   }
   input, button {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     border: none;
   }
 `;
